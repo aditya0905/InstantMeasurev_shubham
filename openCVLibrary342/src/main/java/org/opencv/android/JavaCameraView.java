@@ -179,7 +179,10 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
                     mFrameWidth = params.getPreviewSize().width;
                     mFrameHeight = params.getPreviewSize().height;
 
-                    mScale = Math.max(((float)height)/mFrameHeight, ((float)width)/mFrameWidth);
+                    if ((getLayoutParams().width == LayoutParams.MATCH_PARENT) && (getLayoutParams().height == LayoutParams.MATCH_PARENT))
+                        mScale = Math.min(((float)height)/mFrameHeight, ((float)width)/mFrameWidth);
+                    else
+                        mScale = 0;
 
                     if (mFpsMeter != null) {
                         mFpsMeter.setResolution(mFrameWidth, mFrameHeight);
@@ -206,7 +209,7 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
                         mSurfaceTexture = new SurfaceTexture(MAGIC_TEXTURE_ID);
                         mCamera.setPreviewTexture(mSurfaceTexture);
                     } else
-                       mCamera.setPreviewDisplay(null);
+                        mCamera.setPreviewDisplay(null);
 
                     /* Finally we are ready to start the preview */
                     Log.d(TAG, "startPreview");
